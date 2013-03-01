@@ -68,4 +68,3 @@ function updateMarkerPosition(loc) {
 	$('#'+field_slug+'_geocode').val(loc.toUrlValue());
 	$('#'+field_slug+'_msg').removeClass('msg_error').text('Updated location: '+loc.toUrlValue());
 }
-

@@ -36,7 +36,7 @@ class Field_Geocode
 		$options = array(
 			'name'	=> $data['form_slug'],
 			'id'	=> $data['form_slug'],
-			'value'	=> isset($data['value']['input']) ? $data['value']['input'] : $data['value'],
+			'value'	=> isset($data['value']['input']) ? $data['value']['input'] : null,
 		);
 
 		$l_failed = $this->CI->lang->line('streams:geocode:geocode_error');
@@ -70,9 +70,38 @@ class Field_Geocode
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Tag output variables
+	 * Output variables
 	 *
-	 * Outputs 'latitude' & 'longitude' variables
+	 * @access 	public
+	 * @param	string
+	 * @param	array
+	 * @return	array
+	 */
+	public function pre_output($input, $params)
+	{
+		if ( ! $input) return null;
+
+		// This is how we save dawg
+		$input = unserialize($input);
+
+		// Piece out the geocode
+		$input['geocode'] = explode(',', $input['geocode']);
+
+		// Label geocode peices
+		$input['geocode']['latitude'] = $input['geocode'][0];
+		$input['geocode']['longitude'] = $input['geocode'][1];
+
+		// Don't need these anynore
+		unset($input['geocode'][0], $input['geocode'][1]);
+
+		// Happy happy happy
+		return $input;
+	}
+
+	// --------------------------------------------------------------------------
+
+	/**
+	 * Tag output variables
 	 *
 	 * @access 	public
 	 * @param	string
@@ -83,11 +112,21 @@ class Field_Geocode
 	{
 		if ( ! $input) return null;
 
-		$pieces = explode(',', $input);
+		// This is how we save dawg
+		$input = unserialize($input);
 
-		if (count($pieces) != 2) return null;
+		// Piece out the geocode
+		$input['geocode'] = explode(',', $input['geocode']);
 
-		return array('latitude' => trim($pieces[0]), 'longitude' => $pieces[1]);
+		// Label geocode peices
+		$input['geocode']['latitude'] = $input['geocode'][0];
+		$input['geocode']['longitude'] = $input['geocode'][1];
+
+		// Don't need these anynore
+		unset($input['geocode'][0], $input['geocode'][1]);
+
+		// Happy happy happy
+		return $input;
 	}
 
     /**
