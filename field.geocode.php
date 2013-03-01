@@ -81,8 +81,21 @@ class Field_Geocode
 	{
 		if ( ! $input) return null;
 
+
 		// This is how we save dawg
-		$input = unserialize($input);
+		if (substr($input, 0, 5) == 'a:2:{')
+		{
+			$input = unserialize($input);
+		}
+		else
+		{
+			$input = array(
+				'input' => $input,
+				'geocode' => null,
+				);
+		}
+
+
 
 		// Piece out the geocode
 		$input['geocode'] = explode(',', $input['geocode']);
@@ -93,6 +106,8 @@ class Field_Geocode
 
 		// Don't need these anynore
 		unset($input['geocode'][0], $input['geocode'][1]);
+
+
 
 		// Happy happy happy
 		return $input;
@@ -113,7 +128,17 @@ class Field_Geocode
 		if ( ! $input) return null;
 
 		// This is how we save dawg
-		$input = unserialize($input);
+		if (substr($input, 0, 5) == 'a:2:{')
+		{
+			$input = unserialize($input);
+		}
+		else
+		{
+			$input = array(
+				'input' => $input,
+				'geocode' => null,
+				);
+		}
 
 
 		// Piece out the geocode
