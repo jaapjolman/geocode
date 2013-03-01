@@ -115,15 +115,25 @@ class Field_Geocode
 		// This is how we save dawg
 		$input = unserialize($input);
 
+
 		// Piece out the geocode
-		$input['geocode'] = explode(',', $input['geocode']);
+		if (! empty($input['geocode']))
+		{
+			$input['geocode'] = explode(',', $input['geocode']);
 
-		// Label geocode peices
-		$input['geocode']['latitude'] = $input['geocode'][0];
-		$input['geocode']['longitude'] = $input['geocode'][1];
+			// Label geocode peices
+			$input['geocode']['latitude'] = $input['geocode'][0];
+			$input['geocode']['longitude'] = $input['geocode'][1];
 
-		// Don't need these anynore
-		unset($input['geocode'][0], $input['geocode'][1]);
+			// Don't need these anynore
+			unset($input['geocode'][0], $input['geocode'][1]);
+		}
+		else
+		{
+			// Label geocode peices
+			$input['geocode']['latitude'] = null;
+			$input['geocode']['longitude'] = null;
+		}
 
 		// Happy happy happy
 		return $input;
